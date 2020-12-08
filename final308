@@ -1,0 +1,58 @@
+CREATE TABLE `ingredients` (
+- recipe_id (primary key)
+- recipe_name
+- recipe_description
+- course
+- food_category
+- cuisine
+- prep_time
+- cook_time
+CREATE TABLE `recipes` (
+  ingredient_id (primary key)
+  ingredient_name
+  recipe_id (foreign key)
+
+
+CREATE TABLE `recipe_ingredients` (
+- step_id (primary key)
+- step_description
+- recipe_id (foreign key)
+
+
+Join(table)*
+- join_id (primary key)
+- recipes_id(foreign key)
+- ingredients_id(foreign key)
+- quantity
+SELECT
+        r.recipe_id AS recipeID,
+        r.recipe_name AS recipeName,
+        r.recipe_description AS recipeDescription,
+        r.cuisine AS cuisine,
+        r.prep_time AS prepTime,
+        r.cook_time AS cookTime,
+        c.course_name AS course,
+        f.food_category_name AS foodCategory
+    FROM Recipe AS r
+    JOIN course AS c ON c.course_id = r.course_id
+    JOIN food_category AS fc ON fc.food_category_id = r.food_category_id
+    WHERE r.recipe_name LIKE '%chocolate%'
+        AND c.course_id = 1 -- i.e. breakfast as course_name
+    ORDER BY r.prep_time -- for example
+    SELECT
+        i.ingredient_name AS ingredientName,
+        q.ingredient_quantity AS ingredientQuantity,
+        m.measurement_name AS measurementName
+    FROM ingredients AS i
+    JOIN quantity AS q ON q.ingredient_id = i.ingredient_id
+    JOIN measurements AS m ON m.measurement_id = q.ingredient_measurement_id
+    JOIN recipe AS r ON r.recipe_id = q.recipe_id
+    WHERE r.recipe_id = 123
+    ORDER BY i.ingredient_name ASC
+    SELECT
+        s.step_number AS stepNo,
+        s.step_description AS stepDescription
+    FROM steps AS s
+    JOIN recipe AS r ON r.recipe_id = s.recipe_id
+    WHERE r.recipe_id = 123
+    ORDER BY s.step_number ASC
